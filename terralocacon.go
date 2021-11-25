@@ -81,8 +81,8 @@ func MakeTerraformTempDir(ctx context.Context, con testcontainers.Container, loc
 	localhostEndpoint := fmt.Sprintf("localhost:%s", externalPort.Port())
 	lines := strings.Split(string(rawFile), "\n")
 	for i, line := range strings.Split(string(rawFile), "\n") {
-		if strings.Contains(line, "localstack:4566") {
-			lines[i] = strings.Replace(line, "localstack:4566", localhostEndpoint, 1)
+		if strings.Contains(line, "localhost:4566") {
+			lines[i] = strings.Replace(line, "localhost:4566", localhostEndpoint, 1)
 		}
 	}
 
