@@ -59,7 +59,7 @@ func MakeTerraformTempDir(ctx context.Context, con testcontainers.Container, loc
 	if strings.Trim(localstackFileDir, " ") == "" {
 		localstackFileDir = "./local/localstack.tf"
 	}
-	if !strings.Contains(localstackFileDir, "localstack.tf") {
+	if strings.Contains(localstackFileDir, "localstack.tf") {
 		return "", "", fmt.Errorf("localstack.tf file is not found in a given directory: %s", localstackFileDir)
 	}
 
