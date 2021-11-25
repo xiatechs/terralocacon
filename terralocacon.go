@@ -96,6 +96,7 @@ func MakeTerraformTempDir(ctx context.Context, con testcontainers.Container, loc
 	if err != nil {
 		return "", "", err
 	}
+	err = os.Chmod(fmt.Sprintf("%s/localstack.tf", tempDir), os.ModePerm)
 
 	return tempDir, localhostEndpoint, err
 }
