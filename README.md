@@ -6,7 +6,7 @@ Terralocacon is a utility kit for debugging ***a single lambda*** with localstac
 
 # What is the use case then?
 
-The use case is you have production data for the input(preferably JSON) of your lambda, then you have databases or you have buckets or you have HTTP/SOAP/FTP clients, etc... which depends on your single lambda. And you have no more clear vision in your mocks(your mocks can not cover complex issues like stale data in your database or HTTP client-related timeout throttling). That's where you will be eligible to use this and hopefully solve your integration issue without doing live debugging on actual AWS infra.
+The use case is you have production data for the input(preferably JSON) of your lambda, then you have databases or you have buckets or you have HTTP/SOAP/FTP clients, etc... which depends on your single lambda. And you have no more clear vision in your mocks(your mocks can not cover complex issues like stale data in your database or HTTP client-related timeout throttling). That's where you will be eligible to use this and hopefully solve your integration issue without doing live debugging on actual AWS infra or mocking hundred of resources which you are not sure about its data quality.
 
 # Dependencies
 
