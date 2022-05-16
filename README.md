@@ -98,6 +98,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/stretchr/testify/assert"
 	"os"
@@ -112,25 +113,25 @@ const awsServices = "dynamodb,kinesis,s3"
 
 func Test_run(t *testing.T) {
 	ctx := context.Background()
-	localstackContainer, err := terralocacon.NewLocalstackContainer(ctx, awsRegion, awsServices)
+	localstackContainer, port, err := terralocacon.NewLocalstackContainer(ctx, awsRegion, awsServices)
 	require.NoError(t, err)
 	defer func() {
 		if err = terralocacon.TerminateContainer(ctx, localstackContainer); err != nil {
 			t.Logf("failed to tear down localstack container: %v", err)
 		}
 	}()
-	tempDir, endpoint, err := terralocacon.MakeTerraformTempDir(ctx, localstackContainer, "./local/localstack.tf")
+	localstackTerraformDir, err := terralocacon.AdjustLocalstackTerraformFile(ctx, localstackContainer, "./local/localstack.tf")
 	require.NoError(t, err)
-	opts := terralocacon.NewTerraformOpts(t, tempDir, 0)
+	opts := terralocacon.NewTerraformOpts(t, localstackTerraformDir, 0)
 	terralocacon.Apply(t, opts)
 	defer terralocacon.Destroy(t, opts)
 
 	// mandatory env variables
-	_ = os.Setenv("LOCALSTACK_ENDPOINT", endpoint)
+	_ = os.Setenv("LOCALSTACK_ENDPOINT", fmt.Sprintf("localhost:%s", port))
 	_ = os.Setenv("REGION_AWS", awsRegion)
 	// set your own env variables here for debugging
 
-  // wrap your test data and execute
+	// wrap your test data and execute
 	var ev events.KinesisEvent
 	ev.Records = make([]events.KinesisEventRecord, 1)
 	ev.Records[0] = events.KinesisEventRecord{
