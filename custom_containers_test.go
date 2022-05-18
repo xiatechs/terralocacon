@@ -58,7 +58,7 @@ func TestNewMongoDBContainer(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, externalPort, err := NewMongoDBContainer(tt.args.ctx)
+			got, externalPort, err := NewMongoDBContainer(tt.args.ctx, "test", "test")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewMongoContainer() error = %v, wantErr %v", err, tt.wantErr)
 				return

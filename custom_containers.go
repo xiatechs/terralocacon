@@ -3,9 +3,10 @@ package terralocacon
 import (
 	"context"
 	"fmt"
+	"strings"
+
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	"strings"
 )
 
 // NewContainer creates a new container with the given name and image.
@@ -37,7 +38,7 @@ func TerminateContainer(ctx context.Context, con testcontainers.Container) error
 }
 
 // NewLocalstackContainer creates a new localstack container
-func NewLocalstackContainer(ctx context.Context, awsRegion string, awsServices string) (testcontainers.Container, string, error) {
+func NewLocalstackContainer(ctx context.Context, awsRegion, awsServices string) (testcontainers.Container, string, error) {
 	conRequest := &testcontainers.ContainerRequest{
 		Image:        "localstack/localstack:latest",
 		ExposedPorts: []string{"4566/tcp"},
@@ -66,14 +67,14 @@ func NewLocalstackContainer(ctx context.Context, awsRegion string, awsServices s
 }
 
 // NewMongoDBContainer creates a new mongo container
-func NewMongoDBContainer(ctx context.Context) (testcontainers.Container, string, error) {
+func NewMongoDBContainer(ctx context.Context, username, password string) (testcontainers.Container, string, error) {
 	conRequest := &testcontainers.ContainerRequest{
 		Image:        "mongo:latest",
 		ExposedPorts: []string{"27017/tcp"},
 		WaitingFor:   wait.ForLog("ready for start up."),
 		Env: map[string]string{
-			"MONGO_INITDB_ROOT_USERNAME": "root",
-			"MONGO_INITDB_ROOT_PASSWORD": "example",
+			"MONGO_INITDB_ROOT_USERNAME": username,
+			"MONGO_INITDB_ROOT_PASSWORD": password,
 		},
 	}
 
